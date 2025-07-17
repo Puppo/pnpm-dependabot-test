@@ -9,7 +9,8 @@
     "format": "prettier --write .",
     "prepare": "husky",
     "common": "pnpm --filter common",
-    "app": "pnpm --filter web-app"
+    "app": "pnpm --filter web-app",
+    "api": "pnpm --filter api"
   },
   "keywords": [],
   "author": "",
