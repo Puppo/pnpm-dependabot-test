@@ -4,7 +4,12 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import tseslint from 'typescript-eslint';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -24,12 +29,12 @@ export default [
   },
   {
     files: ['apps/web-app/**/*.{ts,tsx}'],
-    settings: { react: { version: '18.3' } },
+    settings: { react: { version: '19.2' } },
     languageOptions: {
       // other options...
       parserOptions: {
         project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: './apps/web-app',
+        tsconfigRootDir: path.resolve(__dirname, 'apps/web-app'),
       },
     },
     plugins: {
