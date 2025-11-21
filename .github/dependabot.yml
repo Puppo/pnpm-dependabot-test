@@ -18,19 +18,48 @@ updates:
         patterns:
           - '@vitejs/*'
           - '@svgr/*'
+        update-types:
+          - minor
+          - patch
+      vitejs-major:
+        patterns:
+          - '@vitejs/*'
+          - '@svgr/*'
+        update-types:
+          - 'major'
       fastify:
         patterns:
           - '@fastify/*'
           - 'fastify*'
+        update-types:
+          - minor
+          - patch
+      fastify-major:
+        patterns:
+          - '@fastify/*'
+          - 'fastify*'
+        update-types:
+          - 'major'
       eslint:
         patterns:
           - 'eslint*'
+        update-types:
+          - minor
+          - patch
+      eslint-major:
+        patterns:
+          - 'eslint*'
+        update-types:
+          - 'major'
       misc-scoped:
         patterns:
-          - '@*'
-          - '!@vitejs/*'
-          - '!@svgr/*'
-          - '!@fastify/*'
-          - '!fastify*'
-          - '!eslint*'
+          - '*'
+        update-types:
+          - minor
+          - patch
+      misc-scoped-major:
+        patterns:
+          - '*'
+        update-types:
+          - 'major'
     open-pull-requests-limit: 20
