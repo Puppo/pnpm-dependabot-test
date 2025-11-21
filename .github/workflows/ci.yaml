@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  pull-requests: write
-  issues: write
-
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -64,19 +60,11 @@ jobs:
     # if it's a pull request created by Dependabot
     if: (github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]') && github.event_name == 'pull_request'
 
+    permissions:
+      pull-requests: write
+      contents: write
+
     steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@d7267f607e9d3fb96fc2fbe83e0af444713e90b7
+      - uses: fastify/github-action-merge-dependabot@v3
         with:
-          github-token: '${{ secrets.PAT_TOKEN }}'
-      - name: Approve a PR
-        run: gh pr review --approve "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.PAT_TOKEN}}
-      - name: Enable auto-merge for Dependabot PRs
-        run: gh pr merge --auto --squash --delete-branch "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.PAT_TOKEN}}
+          target: minor
