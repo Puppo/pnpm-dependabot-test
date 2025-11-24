@@ -12,6 +12,12 @@ jobs:
   check-review-count:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout scripts
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            .github
       - name: Check Approval Count
         uses: actions/github-script@v8
         with:
