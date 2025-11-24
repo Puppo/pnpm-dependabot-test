@@ -39,13 +39,21 @@ export default async ({ github, context, core }) => {
     pull_number: pr.number,
   });
 
-  const approvedReviews = reviews.filter(
-    (review) => review.state === 'APPROVED',
+  // Only count the latest review from each reviewer, and only if it's APPROVED
+  const latestReviews = new Map();
+  reviews.forEach((review) => {
+    const existing = latestReviews.get(review.user.login);
+    if (
+      !existing ||
+      new Date(review.submitted_at) > new Date(existing.submitted_at)
+    ) {
+      latestReviews.set(review.user.login, review);
+    }
+  });
+  const approvedReviews = Array.from(latestReviews.values()).filter(
+    (review) => review.state === 'APPROVED' && review.user.login !== author,
   );
-  const uniqueApprovers = new Set(
-    approvedReviews.map((review) => review.user.login),
-  );
-  const approvalCount = uniqueApprovers.size;
+  const approvalCount = approvedReviews.length;
 
   console.log(`Current Approvals: ${approvalCount}`);
   console.log(`Required Approvals: ${requiredApprovals}`);
