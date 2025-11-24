@@ -45,6 +45,6 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@eslint/css": "0.10.0"
+    "@eslint/css": "0.14.1"
   }
 }
