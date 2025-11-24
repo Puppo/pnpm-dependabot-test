@@ -45,6 +45,6 @@
   },
   "dependencies": {
     "@commitlint/cli": "19.8.1",
-    "@eslint/css": "0.10.0"
+    "@eslint/css": "0.14.1"
   }
 }
