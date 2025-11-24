@@ -1,0 +1,38 @@
+name: Dependabot Auto Label
+on: pull_request_target
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  dependabot-label:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Label Major
+        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
+        run: gh pr edit "$PR_URL" --add-label "semver:major"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label Minor
+        if: steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        run: gh pr edit "$PR_URL" --add-label "semver:minor"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label Patch
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr edit "$PR_URL" --add-label "semver:patch"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
