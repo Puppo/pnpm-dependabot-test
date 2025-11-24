@@ -21,7 +21,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
+    "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.39.1",
     "@eslint/json": "^0.14.0",
