@@ -63,6 +63,7 @@ jobs:
     steps:
       - uses: fastify/github-action-merge-dependabot@v3
         with:
+          github-token: ${{ secrets.PAT_TOKEN }}
           approve-only: true
           use-github-auto-merge: true
           target: minor
