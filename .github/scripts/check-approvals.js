@@ -1,4 +1,4 @@
-export default async ({ github, context, core }) => {
+export default async ({ github, context }) => {
   const prPayload =
     context.payload.pull_request || context.payload.review.pull_request;
 
@@ -58,10 +58,28 @@ export default async ({ github, context, core }) => {
   console.log(`Current Approvals: ${approvalCount}`);
   console.log(`Required Approvals: ${requiredApprovals}`);
 
-  if (approvalCount < requiredApprovals) {
-    core.setFailed(
-      `This PR requires ${requiredApprovals} approval(s), but has ${approvalCount}.`,
-    );
+  // Create a unified status check instead of failing the workflow
+  // This prevents duplicate checks from appearing for different events (pull_request vs pull_request_review)
+  const state = approvalCount < requiredApprovals ? 'failure' : 'success';
+  const description =
+    approvalCount < requiredApprovals
+      ? `Requires ${requiredApprovals} approval(s), has ${approvalCount}.`
+      : 'Approval requirement met.';
+
+  await github.rest.repos.createCommitStatus({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    sha: pr.head.sha,
+    state,
+    description,
+    context: 'Review Policy',
+  });
+
+  if (state === 'failure') {
+    console.log(`Check failed: ${description}`);
+    // We intentionally do NOT call core.setFailed() here.
+    // This allows the workflow to pass, while the "Review Policy" status check (created above) will fail.
+    // This ensures you have a single, consistent status check to use for branch protection.
   } else {
     console.log('Approval requirement met.');
   }
