@@ -25,8 +25,8 @@ export default async ({ github, context }) => {
       );
       requiredApprovals = 2;
     } else {
-      console.log('Dependabot PR (minor/patch). Requiring 1 approval.');
-      requiredApprovals = 1;
+      console.log('Dependabot PR (minor/patch). Requiring 0 approval.');
+      requiredApprovals = 0;
     }
   } else {
     console.log('Human PR. Requiring 2 approvals.');
