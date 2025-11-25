@@ -1,9 +1,12 @@
-name: Dependabot Auto Label
-on: pull_request_target
+name: Dependabot Checks
+on:
+  pull_request:
+    branches:
+      - main
 
 permissions:
   pull-requests: write
-  contents: read
+  contents: write
 
 jobs:
   dependabot-label:
@@ -36,3 +39,19 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  dependabot:
+    needs: dependabot-label
+    runs-on: ubuntu-24.04
+    # if it's a pull request created by Dependabot
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3
+        id: merge-dependabot
+        with:
+          target: minor
+          use-github-auto-merge: true
+      - name: Print merge status
+        run: |
+          echo "Merge status: ${{ steps.merge-dependabot.outputs.merge_status }}"
