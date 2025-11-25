@@ -18,7 +18,6 @@ jobs:
       - uses: fastify/github-action-merge-dependabot@v3
         id: merge-dependabot
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           target: minor
           approve-only: true
       - name: Print merge status
