@@ -20,7 +20,6 @@ jobs:
         with:
           target: minor
           use-github-auto-merge: true
-          github-token: ${{ secrets.PAT_TOKEN }}
       - name: Print merge status
         run: |
           echo "Merge status: ${{ steps.merge-dependabot.outputs.merge_status }}"
