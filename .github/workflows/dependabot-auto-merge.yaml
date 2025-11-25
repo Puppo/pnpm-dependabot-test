@@ -5,21 +5,20 @@ on:
     branches:
       - 'main'
 
-permissions:
-  contents: write
-  pull-requests: write
-  statuses: write
-
 jobs:
   dependabot:
     runs-on: ubuntu-24.04
     # if it's a pull request created by Dependabot
     if: github.actor == 'dependabot[bot]'
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - uses: fastify/github-action-merge-dependabot@v3
         id: merge-dependabot
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           target: minor
           approve-only: true
       - name: Print merge status
